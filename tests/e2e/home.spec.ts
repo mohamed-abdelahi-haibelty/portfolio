@@ -140,8 +140,13 @@ for (const locale of ["fr", "en"] as const) {
 
       for (let i = 0; i < 8; i++) {
         await page.keyboard.press(tabKey(browserName));
-        const inside = await dialog.evaluate((el) => el.contains(document.activeElement));
-        expect(inside, `focus left the menu after ${i + 1} Tab presses`).toBe(true);
+        // Wrapping passes through Base UI's focus guard, which hands focus back within a frame.
+        await expect
+          .poll(() => dialog.evaluate((el) => el.contains(document.activeElement)), {
+            message: `focus left the menu after ${i + 1} Tab presses`,
+            timeout: 1000,
+          })
+          .toBe(true);
       }
 
       await page.keyboard.press("Escape");
