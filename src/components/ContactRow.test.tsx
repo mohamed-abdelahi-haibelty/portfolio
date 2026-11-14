@@ -36,10 +36,10 @@ describe("ContactRow", () => {
       />,
     );
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "mailto:mohamed.abdelahi.haibelti@gmail.com");
+    expect(link).toHaveAttribute("href", "mailto:mohamed.abdellahi.haibelti@gmail.com");
     const value = link.querySelector("[data-value]");
-    expect(value?.innerHTML).toBe("mohamed.<wbr>abdelahi.<wbr>haibelti<wbr>@gmail.com");
-    expect(value).toHaveTextContent("mohamed.abdelahi.haibelti@gmail.com");
+    expect(value?.innerHTML).toBe("mohamed.<wbr>abdellahi.<wbr>haibelti<wbr>@gmail.com");
+    expect(value).toHaveTextContent("mohamed.abdellahi.haibelti@gmail.com");
   });
 
   it("opens WhatsApp in a new tab with noopener noreferrer", () => {

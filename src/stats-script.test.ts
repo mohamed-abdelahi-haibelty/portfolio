@@ -58,7 +58,7 @@ beforeEach(() => {
     <section id="contact">
       <a href="https://wa.me/22227117087?text=Bonjour">WhatsApp</a>
       <a href="tel:+22227117087">Téléphone</a>
-      <a href="mailto:mohamed.abdelahi.haibelti@gmail.com">E-mail</a>
+      <a href="mailto:mohamed.abdellahi.haibelti@gmail.com">E-mail</a>
       <a href="#method">Méthode</a>
     </section>
     <header><a href="/en" hreflang="en" data-keep-hash>EN</a></header>`;

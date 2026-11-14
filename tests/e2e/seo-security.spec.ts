@@ -100,7 +100,7 @@ for (const locale of locales) {
       expect(person).toMatchObject({
         name: "Mohamed Abdellahi Haibelty",
         telephone: "+22227117087",
-        email: "mohamed.abdelahi.haibelti@gmail.com",
+        email: "mohamed.abdellahi.haibelti@gmail.com",
       });
       expect(data["@graph"].map((node) => node["@type"])).toEqual([
         "Person",

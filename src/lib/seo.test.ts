@@ -93,7 +93,7 @@ describe("JSON-LD", () => {
       jobTitle: dicts[locale].seo.jobTitle,
       url: `https://abdellahi.dev/${locale}`,
       telephone: "+22227117087",
-      email: "mohamed.abdelahi.haibelti@gmail.com",
+      email: "mohamed.abdellahi.haibelti@gmail.com",
       address: { addressLocality: "Nouakchott", addressCountry: "MR" },
       knowsLanguage: ["fr", "en", "ar"],
     });
@@ -118,7 +118,7 @@ describe("JSON-LD", () => {
       expect.objectContaining({ contactType: "phone", telephone: "+22227117087" }),
       expect.objectContaining({
         contactType: "email",
-        email: "mohamed.abdelahi.haibelti@gmail.com",
+        email: "mohamed.abdellahi.haibelti@gmail.com",
       }),
     ]);
   });

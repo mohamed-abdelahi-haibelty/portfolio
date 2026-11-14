@@ -94,7 +94,7 @@ for (const locale of ["fr", "en"] as const) {
       await expect(whatsapp).toHaveAttribute("rel", "noopener noreferrer");
       await expect(contact.locator('a[href="tel:+22227117087"]')).toHaveCount(1);
       await expect(
-        contact.locator('a[href="mailto:mohamed.abdelahi.haibelti@gmail.com"]'),
+        contact.locator('a[href="mailto:mohamed.abdellahi.haibelti@gmail.com"]'),
       ).toHaveCount(1);
       await expect(contact.getByRole("link")).toHaveCount(3);
 

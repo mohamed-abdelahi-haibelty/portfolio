@@ -26,12 +26,12 @@ describe("contact links", () => {
       },
       phone: { href: "tel:+22227117087", display: "+222 27 11 70 87" },
       email: {
-        href: "mailto:mohamed.abdelahi.haibelti@gmail.com",
-        display: "mohamed.abdelahi.haibelti@gmail.com",
+        href: "mailto:mohamed.abdellahi.haibelti@gmail.com",
+        display: "mohamed.abdellahi.haibelti@gmail.com",
       },
     });
     expect(phoneDisplay).toBe("+222 27 11 70 87");
-    expect(emailDisplay).toBe("mohamed.abdelahi.haibelti@gmail.com");
+    expect(emailDisplay).toBe("mohamed.abdellahi.haibelti@gmail.com");
   });
 
   it("formats a Mauritanian E.164 number in pairs", () => {
