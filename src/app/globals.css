@@ -173,6 +173,13 @@
     outline-offset: 2px;
   }
 
+  /* In-page links glide to their section, except under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

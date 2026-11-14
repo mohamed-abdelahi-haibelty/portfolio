@@ -18,7 +18,7 @@ export function Sticker({ text, className }: StickerProps) {
   return (
     <span
       className={cn(
-        "grid size-[104px] -rotate-12 place-items-center rounded-full border-3 border-ink bg-pink p-1 text-center font-hand text-[17px] leading-none font-bold text-ink md:size-[150px] md:p-2.5 md:text-2xl md:leading-[1.05]",
+        "grid size-[104px] -rotate-12 place-items-center rounded-full border-3 border-ink bg-pink text-center font-hand text-base leading-none font-bold text-ink md:size-[150px] md:text-2xl md:leading-[1.05]",
         className,
       )}
     >

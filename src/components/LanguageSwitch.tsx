@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { locales, type Locale } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +10,11 @@ type LanguageSwitchProps = {
   className?: string;
 };
 
-/** FR / EN pill. Two plain links; the current one is ink-filled. */
+/**
+ * FR / EN pill. Two plain links (not `next/link`): the mobile menu script
+ * copies the current `#section` onto every `[data-keep-hash]` link, and a
+ * plain link follows its live `href`. The current one is ink-filled.
+ */
 export function LanguageSwitch({ locale, hash = "", labels, className }: LanguageSwitchProps) {
   return (
     <div
@@ -29,21 +32,23 @@ export function LanguageSwitch({ locale, hash = "", labels, className }: Languag
 
         if (code === locale) {
           return (
-            <Link
+            <a
               key={code}
               href={href}
+              data-keep-hash
               aria-current="true"
               className={cn(linkClass, "bg-ink text-white")}
             >
               {code.toUpperCase()}
-            </Link>
+            </a>
           );
         }
 
         return (
-          <Link
+          <a
             key={code}
             href={href}
+            data-keep-hash
             hrefLang={code}
             lang={code}
             className={cn(linkClass, "text-ink")}
@@ -52,7 +57,7 @@ export function LanguageSwitch({ locale, hash = "", labels, className }: Languag
             <span lang={locale} className="sr-only">
               {labels.switchTo}
             </span>
-          </Link>
+          </a>
         );
       })}
     </div>
