@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, MetadataRoute } from "next";
 import type { Dictionary } from "@/content/types";
 import { EMAIL, PHONE_E164, whatsappHref } from "./contact";
 import { defaultLocale, locales, type Locale } from "./site";
@@ -129,4 +129,22 @@ export function buildJsonLd({ locale, dict, siteUrl }: JsonLdInput) {
 /** JSON for a `<script type="application/ld+json">`, with `<` escaped so it cannot close the tag. */
 export function serializeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+/** `sitemap.xml`: both locale URLs, each with its language alternates (absolute). */
+export function buildSitemap(siteUrl: string, lastModified: Date): MetadataRoute.Sitemap {
+  const languages = Object.fromEntries(
+    Object.entries(languageAlternates()).map(([lang, path]) => [lang, `${siteUrl}${path}`]),
+  );
+  return locales.map((locale) => ({
+    url: `${siteUrl}/${locale}`,
+    lastModified,
+    alternates: { languages },
+  }));
+}
+
+/** `robots.txt`: allow all and point to the sitemap on production, disallow all elsewhere. */
+export function buildRobots(siteUrl: string, indexable: boolean): MetadataRoute.Robots {
+  if (!indexable) return { rules: { userAgent: "*", disallow: "/" } };
+  return { rules: { userAgent: "*", allow: "/" }, sitemap: `${siteUrl}/sitemap.xml` };
 }

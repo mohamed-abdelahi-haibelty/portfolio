@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { en } from "@/content/en";
 import { fr } from "@/content/fr";
-import { buildJsonLd, buildMetadata, isIndexable, serializeJsonLd } from "./seo";
+import {
+  buildJsonLd,
+  buildMetadata,
+  buildRobots,
+  buildSitemap,
+  isIndexable,
+  serializeJsonLd,
+} from "./seo";
 
 const siteUrl = "https://abdellahi.dev";
 const dicts = { fr, en } as const;
@@ -126,5 +133,33 @@ describe("JSON-LD", () => {
 
   it("serialization escapes < so the script cannot be closed early", () => {
     expect(serializeJsonLd({ a: "</script>" })).toBe('{"a":"\\u003c/script>"}');
+  });
+});
+
+describe("buildSitemap", () => {
+  it("lists /fr and /en with absolute language alternates and the build date", () => {
+    const date = new Date("2026-11-14T00:00:00Z");
+    const languages = {
+      fr: "https://abdellahi.dev/fr",
+      en: "https://abdellahi.dev/en",
+      "x-default": "https://abdellahi.dev/fr",
+    };
+    expect(buildSitemap(siteUrl, date)).toEqual([
+      { url: "https://abdellahi.dev/fr", lastModified: date, alternates: { languages } },
+      { url: "https://abdellahi.dev/en", lastModified: date, alternates: { languages } },
+    ]);
+  });
+});
+
+describe("buildRobots", () => {
+  it("production: allow all and point to the sitemap", () => {
+    expect(buildRobots(siteUrl, true)).toEqual({
+      rules: { userAgent: "*", allow: "/" },
+      sitemap: "https://abdellahi.dev/sitemap.xml",
+    });
+  });
+
+  it("previews: disallow all", () => {
+    expect(buildRobots(siteUrl, false)).toEqual({ rules: { userAgent: "*", disallow: "/" } });
   });
 });
