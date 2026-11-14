@@ -13,15 +13,15 @@ pnpm dev          # http://localhost:3000 (redirects to /fr or /en)
 
 ## Scripts
 
-| Script | Does |
-| --- | --- |
-| `pnpm dev` | Dev server (Turbopack) |
-| `pnpm build` / `pnpm start` | Production build / serve it locally |
-| `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm lint` / `pnpm format` | ESLint / Prettier check (`pnpm format:write` fixes formatting) |
-| `pnpm test` | Vitest unit and component tests |
-| `pnpm test:e2e` | Playwright (Chromium + iPhone 13 WebKit). Builds and starts the app, or tests `BASE_URL` when set |
-| `pnpm check` | typecheck + lint + format + unit tests |
+| Script                      | Does                                                                                              |
+| --------------------------- | ------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                  | Dev server (Turbopack)                                                                            |
+| `pnpm build` / `pnpm start` | Production build / serve it locally                                                               |
+| `pnpm typecheck`            | `tsc --noEmit`                                                                                    |
+| `pnpm lint` / `pnpm format` | ESLint / Prettier check (`pnpm format:write` fixes formatting)                                    |
+| `pnpm test`                 | Vitest unit and component tests                                                                   |
+| `pnpm test:e2e`             | Playwright (Chromium + iPhone 13 WebKit). Builds and starts the app, or tests `BASE_URL` when set |
+| `pnpm check`                | typecheck + lint + format + unit tests                                                            |
 
 A pre-commit hook runs ESLint and Prettier on staged files.
 

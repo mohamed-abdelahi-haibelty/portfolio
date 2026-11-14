@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint --max-warnings=0 .",
+    "prepare": "husky",
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "check": "pnpm typecheck && pnpm lint && pnpm format && pnpm test"
   },
   "dependencies": {
     "next": "16.4.6",
@@ -15,14 +20,19 @@
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
+    "eslint": "9.39.5",
     "eslint-config-next": "16.4.6",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "prettier": "3.10.1",
+    "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.2"
   },
   "packageManager": "pnpm@11.18.0",
   "engines": {
