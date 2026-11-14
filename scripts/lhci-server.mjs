@@ -1,5 +1,5 @@
 // Serves the local production build the way Vercel's CDN does (HTTP/2, TLS,
-// brotli) so Lighthouse's simulated throttling measures what visitors get.
+// compression) so Lighthouse's simulated throttling measures what visitors get.
 // Plain `next start` is HTTP/1.1 + gzip, which Lighthouse models with per-request
 // connection costs that the real site does not have.
 //
@@ -10,7 +10,7 @@ import { request } from "node:http";
 import { createSecureServer } from "node:http2";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createBrotliCompress } from "node:zlib";
+import { createGzip } from "node:zlib";
 
 const PORT = 3400;
 const UPSTREAM_PORT = 3401;
@@ -71,10 +71,12 @@ const server = createSecureServer({ key, cert, allowHTTP1: false }, (req, res) =
         if (!HOP_BY_HOP.has(name) && value !== undefined) out[name] = value;
       }
       const type = String(upstreamRes.headers["content-type"] ?? "");
-      const accepts = String(req.headers["accept-encoding"] ?? "").includes("br");
+      // gzip, not maximum-quality brotli: it reproduces the transfer sizes Vercel
+      // actually serves (measured 2026-11-14), so the budgets are not flattered.
+      const accepts = String(req.headers["accept-encoding"] ?? "").includes("gzip");
       if (accepts && COMPRESSIBLE.test(type)) {
-        res.writeHead(upstreamRes.statusCode ?? 502, { ...out, "content-encoding": "br" });
-        upstreamRes.pipe(createBrotliCompress()).pipe(res);
+        res.writeHead(upstreamRes.statusCode ?? 502, { ...out, "content-encoding": "gzip" });
+        upstreamRes.pipe(createGzip()).pipe(res);
       } else {
         res.writeHead(upstreamRes.statusCode ?? 502, out);
         upstreamRes.pipe(res);
