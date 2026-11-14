@@ -3,3 +3,8 @@ src/components/ui/
 
 # Generated
 pnpm-lock.yaml
+
+# Local notes, not part of the repository
+context/
+design/
+tasks/

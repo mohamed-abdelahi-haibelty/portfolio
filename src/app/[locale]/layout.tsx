@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary, isLocale, locales } from "@/content";
+import { fontVariables } from "../fonts";
 import "../globals.css";
 
 export const dynamicParams = false;
@@ -20,8 +21,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale}>
-      <body>{children}</body>
+    <html lang={locale} className={fontVariables}>
+      <body className="min-h-dvh paper antialiased">{children}</body>
     </html>
   );
 }

@@ -2,128 +2,173 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * "Cahier quadrillé" design tokens. Components use only these names.
+ * Fluid type interpolates between 390px and 1024px viewports.
+ */
+@theme {
+  --color-*: initial;
+  --color-paper: #fcfcfa;
+  --color-grid: #e3e8f0;
+  --color-ink: #15171c;
+  --color-muted: #5b6170;
+  --color-pen: #2f5bea;
+  --color-highlight: #ffe15a;
+  --color-lime: #c6f432;
+  --color-pink: #ff9ebb;
+  --color-sky: #9ed4f5;
+  --color-pin-pink: #e2456f;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  /* Small details taken from the approved mock: window dots and the badge clip. */
+  --color-dot-red: #ff6b6b;
+  --color-dot-yellow: #ffd84d;
+  --color-dot-green: #3dd68c;
+  --color-metal-light: #c9ced8;
+  --color-metal-dark: #8c93a3;
 
+  --radius-tile: 10px;
+  --radius-button: 14px;
+  --radius-card: 22px;
+  --radius-block: 26px;
+
+  --shadow-hard-sm: 3px 3px 0 var(--color-ink);
+  --shadow-hard: 5px 5px 0 var(--color-ink);
+  --shadow-hard-md: 6px 6px 0 var(--color-ink);
+  --shadow-hard-lg: 10px 10px 0 var(--color-ink);
+  --shadow-badge: 10px 12px 0 var(--color-ink);
+  --shadow-note: 0 14px 20px -10px rgb(20 23 28 / 0.35);
+  --shadow-scrap: 0 8px 14px -8px rgb(20 23 28 / 0.35);
+  --shadow-window: 0 20px 30px -18px rgb(20 23 28 / 0.35);
+  --shadow-pin: 3px 5px 6px rgb(20 23 28 / 0.28);
+
+  --text-h1: clamp(2.5rem, 1.6542rem + 3.47vw, 3.875rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(2rem, 1.2311rem + 3.155vw, 3.25rem);
+  --text-h2--line-height: 1.06;
+  --text-h2--letter-spacing: -0.02em;
+  --text-card: clamp(1.3125rem, 1.1587rem + 0.631vw, 1.5625rem);
+  --text-card--line-height: 1.15;
+  --text-lead: clamp(1rem, 0.8847rem + 0.473vw, 1.1875rem);
+  --text-lead--line-height: 1.6;
+  --text-body: clamp(0.9375rem, 0.8606rem + 0.315vw, 1.0625rem);
+  --text-body--line-height: 1.5;
+  --text-hand: clamp(1.1875rem, 0.9184rem + 1.104vw, 1.625rem);
+  --text-hand--line-height: 1.15;
+  --text-sticky: clamp(1.125rem, 1.0481rem + 0.315vw, 1.25rem);
+  --text-sticky--line-height: 1.25;
+  --text-label: clamp(0.75rem, 0.7116rem + 0.158vw, 0.8125rem);
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.08em;
+  --text-value: clamp(0.875rem, 0.7597rem + 0.473vw, 1.0625rem);
+  --text-value--line-height: 1.35;
+}
+
+/* next/font exposes --font-bricolage, --font-inter and --font-kalam on <html>. */
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-kalam), cursive;
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+/* Grid paper: 28px squares, 24px under 768px. */
+@utility paper {
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+
+  @media (width >= 48rem) {
+    background-size: 28px 28px;
+  }
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* Translucent tape strip with zig-zag ends. Colour comes from --tape. */
+@utility tape {
+  background: color-mix(in srgb, var(--tape, var(--color-highlight)) 90%, transparent);
+  clip-path: polygon(
+    0 8%,
+    4% 0,
+    9% 10%,
+    14% 0,
+    100% 0,
+    97% 50%,
+    100% 100%,
+    90% 92%,
+    85% 100%,
+    0 100%,
+    3% 50%
+  );
+}
+
+/* Highlighter stroke behind the lower ~60% of the text. Colour comes from --hl. */
+@utility hl {
+  background-image: linear-gradient(
+    100deg,
+    transparent 1%,
+    var(--hl, var(--color-lime)) 3%,
+    var(--hl, var(--color-lime)) 96%,
+    transparent 99%
+  );
+  background-size: 100% 62%;
+  background-position: 0 78%;
+  background-repeat: no-repeat;
+  padding-inline: 6px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Irregular marker block radius. */
+@utility marker {
+  border-radius: 3px 10px 4px 12px / 12px 4px 10px 3px;
+}
+
+/* Sticky note with the bottom-right corner folded away. */
+@utility note-fold {
+  clip-path: polygon(0 0, 100% 0, 100% 86%, 86% 100%, 0 100%);
+}
+
+/* Torn paper scrap. */
+@utility torn {
+  clip-path: polygon(0 4%, 6% 0, 100% 3%, 97% 100%, 3% 96%);
+}
+
+/* Push-pin: radial gradient with a highlight. Colour comes from --pin. */
+@utility pin {
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--color-white) 0 12%,
+    var(--pin, var(--color-pen)) 30%,
+    var(--pin, var(--color-pen)) 70%,
+    rgb(0 0 0 / 0.35) 100%
+  );
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-pen);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 }
