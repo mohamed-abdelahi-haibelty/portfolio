@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary, isLocale, locales } from "@/content";
+import { buildMetadata, isIndexable } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -13,8 +15,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: getDictionary(locale).seo.title };
+  return buildMetadata({
+    locale,
+    dict: getDictionary(locale),
+    siteUrl: SITE_URL,
+    indexable: isIndexable({ VERCEL_ENV: process.env.VERCEL_ENV }),
+  });
 }
+
+/** `--color-paper`: the meta tag cannot read the CSS token. */
+export const viewport: Viewport = { themeColor: "#FCFCFA" };
 
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
   const { locale } = await params;

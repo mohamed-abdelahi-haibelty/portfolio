@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getDictionary, isLocale } from "@/content";
 import { whatsappHref } from "@/lib/contact";
+import { buildJsonLd, serializeJsonLd } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site";
 import { Contact } from "@/sections/Contact";
 import { Guarantees } from "@/sections/Guarantees";
 import { Hero } from "@/sections/Hero";
@@ -14,8 +16,11 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
 
+  const jsonLd = serializeJsonLd(buildJsonLd({ locale, dict, siteUrl: SITE_URL }));
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
       <SiteHeader locale={locale} name={dict.logo.text} skip={dict.skip} t={dict.nav} />
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero

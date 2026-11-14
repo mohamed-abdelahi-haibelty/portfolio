@@ -2,8 +2,8 @@
  * Contact details, exactly as in the project brief. Note the spellings:
  * the name is "Abdellahi", the address uses "abdelahi" and "haibelti".
  */
-const PHONE_E164 = "+22227117087";
-const EMAIL = "mohamed.abdelahi.haibelti@gmail.com";
+export const PHONE_E164 = "+22227117087";
+export const EMAIL = "mohamed.abdelahi.haibelti@gmail.com";
 
 /** "+22227117087" → "+222 27 11 70 87" (country code, then pairs). */
 export function formatPhone(e164: string): string {
