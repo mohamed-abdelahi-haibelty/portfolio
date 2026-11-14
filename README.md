@@ -2,6 +2,8 @@
 
 The personal site of Mohamed Abdellahi Haibelty, web developer. It is one static page in French (`/fr`, the default) and English (`/en`), and its only goal is to get visitors in touch.
 
+Live at **https://abdellahi.dev** (`www.abdellahi.dev` redirects there).
+
 ## Run it
 
 You need Node 24 (see `.nvmrc`) and pnpm.
@@ -22,9 +24,18 @@ pnpm dev          # http://localhost:3000 (redirects to /fr or /en)
 | `pnpm test`                 | Vitest unit and component tests                                                                   |
 | `pnpm test:e2e`             | Playwright (Chromium + iPhone 13 WebKit). Builds and starts the app, or tests `BASE_URL` when set |
 | `pnpm check`                | typecheck + lint + format + unit tests                                                            |
+| `pnpm lhci`                 | Lighthouse budgets on a local production build                                                    |
 
 A pre-commit hook runs ESLint and Prettier on staged files.
 
+## Change the text
+
+Every visible word lives in two files: `src/content/fr.ts` (French) and `src/content/en.ts` (English). Both must keep exactly the same keys; a test fails otherwise.
+
+1. Edit the text in both files.
+2. Run `pnpm check` and `pnpm test:e2e` (the end-to-end tests compare the page with these files).
+3. Commit and push to `main`. Vercel deploys it to https://abdellahi.dev in about a minute.
+
 ## Deployment
 
-Vercel's Git integration deploys a preview for every pull request and deploys production on every merge to `main`. CI (`.github/workflows/ci.yml`) must pass before a PR can merge. No secrets and no `.env` files live in this repository; the only environment variable, `NEXT_PUBLIC_SITE_URL`, is set in the Vercel project.
+Vercel's Git integration builds production on every push to `main`; a failed build never replaces the live site. Run `pnpm check` and `pnpm test:e2e` before pushing. No secrets and no `.env` files live in this repository; the environment variables (`NEXT_PUBLIC_SITE_URL`, and the public analytics key) are set in the Vercel project. DNS for `abdellahi.dev` is on Cloudflare (two `CNAME` records to Vercel, DNS only).
