@@ -1,7 +1,6 @@
 "use client";
 
-import { Dialog } from "@base-ui/react/dialog";
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { CloseIcon } from "@/components/icons/CloseIcon";
 import { MenuIcon } from "@/components/icons/MenuIcon";
 
@@ -35,7 +34,7 @@ function useKeepHashOnLanguageLinks() {
   }, []);
 }
 
-/** Jump to a section after the sheet has closed (and the page scroll is unlocked). */
+/** Jump to a section (the sheet is closed and the page scroll unlocked). */
 function goTo(hash: string) {
   if (window.location.hash === hash) {
     document.getElementById(hash.slice(1))?.scrollIntoView();
@@ -44,45 +43,111 @@ function goTo(hash: string) {
   }
 }
 
+function lockPageScroll(locked: boolean) {
+  document.documentElement.style.overflow = locked ? "hidden" : "";
+}
+
 const buttonClass =
   "relative grid size-10 place-items-center rounded-xl border-2 border-ink bg-white text-ink before:absolute before:-inset-0.5";
 
 /**
  * Under 768px: a menu button opening a sheet with the section links and the
- * call to action. Modal: focus is trapped, Escape closes it, focus returns to
- * the button. The only Client Component of the site.
+ * call to action. A native modal `<dialog>`: the page behind is inert, Escape
+ * closes it and focus returns to the button; Tab wraps inside the sheet.
+ * The only Client Component of the site.
  */
 export function MobileMenu({ label, links, cta }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
-  const pendingHash = useRef<string | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
   useKeepHashOnLanguageLinks();
 
-  function follow(event: MouseEvent<HTMLAnchorElement>, href: string) {
-    event.preventDefault();
-    pendingHash.current = href;
+  function show() {
+    dialog.current?.showModal();
+    lockPageScroll(true);
+    setOpen(true);
+  }
+
+  function hide() {
+    dialog.current?.close();
+  }
+
+  /** Fires for every way of closing: close button, Escape, backdrop, a link. */
+  function onClose() {
+    lockPageScroll(false);
     setOpen(false);
   }
 
-  function onOpenChangeComplete(isOpen: boolean) {
-    const hash = pendingHash.current;
-    if (isOpen || hash === null) return;
-    pendingHash.current = null;
-    goTo(hash);
+  function follow(event: MouseEvent<HTMLAnchorElement>, href: string) {
+    event.preventDefault();
+    hide();
+    lockPageScroll(false);
+    goTo(href);
+  }
+
+  /** A click on the backdrop lands on the dialog element, outside its box. */
+  function onDialogClick(event: MouseEvent<HTMLDialogElement>) {
+    const box = event.currentTarget.getBoundingClientRect();
+    const inside =
+      event.clientX >= box.left &&
+      event.clientX <= box.right &&
+      event.clientY >= box.top &&
+      event.clientY <= box.bottom;
+    if (event.target === event.currentTarget && !inside) hide();
+  }
+
+  /** Keep Tab inside the sheet (a modal dialog would otherwise let it reach the browser UI). */
+  function onKeyDown(event: KeyboardEvent<HTMLDialogElement>) {
+    if (event.key !== "Tab") return;
+    const focusable = [
+      ...event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"),
+    ];
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (!first || !last) return;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen} onOpenChangeComplete={onOpenChangeComplete}>
-      <Dialog.Trigger aria-label={label} className={buttonClass}>
+    <>
+      <button
+        type="button"
+        aria-label={label}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={show}
+        className={buttonClass}
+      >
         <MenuIcon size={22} />
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Backdrop className="fixed inset-0 z-40 bg-ink/40 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-safe:transition-opacity motion-safe:duration-200" />
-        <Dialog.Popup className="fixed inset-y-0 end-0 z-50 flex w-[min(20rem,88vw)] flex-col gap-8 overflow-y-auto border-s-3 border-ink paper px-5 pt-[22px] pb-8 text-ink data-ending-style:translate-x-full data-starting-style:translate-x-full motion-safe:transition-transform motion-safe:duration-200">
+      </button>
+      <dialog
+        ref={dialog}
+        aria-labelledby={titleId}
+        onClose={onClose}
+        onClick={onDialogClick}
+        onKeyDown={onKeyDown}
+        className="fixed inset-y-0 start-auto end-0 m-0 h-dvh max-h-none w-[min(20rem,88vw)] max-w-none translate-x-full overflow-y-auto border-0 border-s-3 border-ink paper px-5 pt-[22px] pb-8 text-ink backdrop:bg-ink/40 open:translate-x-0 motion-safe:transition-[translate,display,overlay] motion-safe:transition-discrete motion-safe:duration-200 starting:open:translate-x-full"
+      >
+        <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between">
-            <Dialog.Title className="font-hand text-hand font-bold text-pen">{label}</Dialog.Title>
-            <Dialog.Close aria-label={label} aria-expanded="true" className={buttonClass}>
+            <h2 id={titleId} className="font-hand text-hand font-bold text-pen">
+              {label}
+            </h2>
+            <button
+              type="button"
+              aria-label={label}
+              aria-expanded="true"
+              onClick={hide}
+              className={buttonClass}
+            >
               <CloseIcon size={22} />
-            </Dialog.Close>
+            </button>
           </div>
           <nav>
             <ul className="flex flex-col gap-1">
@@ -110,8 +175,8 @@ export function MobileMenu({ label, links, cta }: MobileMenuProps) {
           >
             {cta.label}
           </a>
-        </Dialog.Popup>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </div>
+      </dialog>
+    </>
   );
 }
