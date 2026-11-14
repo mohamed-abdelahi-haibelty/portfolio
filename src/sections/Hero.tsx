@@ -82,7 +82,7 @@ function CharacterCard({ t }: Pick<HeroProps, "t">) {
         width={290}
         className="absolute start-[6%] bottom-2 h-auto w-[80%] max-w-[290px]"
       />
-      <HandNote rotate={-3} className="absolute start-3.5 top-3 text-lg leading-tight">
+      <HandNote rotate={-3} className="absolute start-3.5 top-3 text-[19px] leading-tight">
         {t.fig}
       </HandNote>
       {t.notes.map((note, index) => (
