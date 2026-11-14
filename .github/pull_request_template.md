@@ -21,5 +21,4 @@
 - [ ] `pnpm check` passes
 - [ ] `pnpm build` passes (`/fr` and `/en` are static)
 - [ ] `pnpm test:e2e` passes
-- [ ] Context files updated (`architecture.md`, `code-standards.md`, `performance-seo.md`, `tooling-and-access.md`)
-- [ ] `context/progress-tracker.md` updated
+- [ ] Docs updated
