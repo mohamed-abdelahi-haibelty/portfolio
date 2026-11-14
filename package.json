@@ -13,7 +13,8 @@
     "format:write": "prettier --write .",
     "check": "pnpm typecheck && pnpm lint && pnpm format && pnpm test",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lhci": "VERCEL_ENV=production NEXT_PUBLIC_SITE_URL=https://localhost:3400 next build && CHROME_PATH=\"$(node -p \"require('@playwright/test').chromium.executablePath()\")\" lhci autorun"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
+    "@lhci/cli": "0.15.1",
     "@playwright/test": "1.65.0",
     "@tailwindcss/turbopack": "4.3.3",
     "@testing-library/dom": "10.4.2",
