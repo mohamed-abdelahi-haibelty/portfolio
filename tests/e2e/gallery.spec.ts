@@ -1,8 +1,24 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+// Set E2E_TARGET=production when BASE_URL is the production site, where the gallery must not exist.
+const onProduction = process.env.E2E_TARGET === "production";
+
+test.describe("component gallery on production", () => {
+  test.skip(!onProduction, "only meaningful against production");
+
+  for (const locale of ["fr", "en"] as const) {
+    test(`/${locale}/_gallery returns 404`, async ({ request }) => {
+      const response = await request.get(`/${locale}/_gallery`);
+      expect(response.status()).toBe(404);
+    });
+  }
+});
+
 for (const locale of ["fr", "en"] as const) {
   test.describe(`component gallery (/${locale}/_gallery)`, () => {
+    test.skip(onProduction, "the gallery is not served on production");
+
     test("has no axe violations", async ({ page }) => {
       await page.goto(`/${locale}/_gallery`);
       const results = await new AxeBuilder({ page }).analyze();
