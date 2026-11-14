@@ -189,3 +189,9 @@
     }
   }
 }
+
+/* 404: both languages are in the static document; <html lang> shows one. */
+html[lang="en"] [data-locale="fr"],
+html:not([lang="en"]) [data-locale="en"] {
+  display: none;
+}

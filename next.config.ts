@@ -41,6 +41,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   typedRoutes: true,
+  // app/global-not-found.tsx: the root layout is the dynamic [locale] segment.
+  experimental: { globalNotFound: true },
   headers() {
     return Promise.resolve([{ source: "/:path*", headers: securityHeaders }]);
   },
