@@ -41,13 +41,6 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   typedRoutes: true,
-  // Visit statistics (public/stats.js) post to this origin; Vercel forwards them
-  // to PostHog EU, so the browser never contacts another origin.
-  rewrites() {
-    return Promise.resolve([
-      { source: "/ingest/:path*", destination: "https://eu.i.posthog.com/:path*" },
-    ]);
-  },
   headers() {
     return Promise.resolve([{ source: "/:path*", headers: securityHeaders }]);
   },
