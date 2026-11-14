@@ -26,23 +26,25 @@ for (const locale of ["fr", "en"] as const) {
       expect(foreign).toEqual([]);
     });
 
-    test("at 320px the email contact row does not overflow", async ({ page }) => {
-      await page.setViewportSize({ width: 320, height: 800 });
-      await page.goto(`/${locale}/_gallery`);
-      await page.evaluate(() => document.fonts.ready);
-      const row = page.locator('a[href^="mailto:"]');
-      const value = row.locator("[data-value]");
-      const rowBox = await row.boundingBox();
-      const valueBox = await value.boundingBox();
-      if (!rowBox || !valueBox) throw new Error("email row not rendered");
-      expect(valueBox.x).toBeGreaterThanOrEqual(rowBox.x);
-      expect(valueBox.x + valueBox.width).toBeLessThanOrEqual(rowBox.x + rowBox.width);
-      const overflows = await value.evaluate((el) => el.scrollWidth > el.clientWidth);
-      expect(overflows).toBe(false);
-      const pageOverflow = await page.evaluate(
-        () => document.documentElement.scrollWidth > window.innerWidth,
-      );
-      expect(pageOverflow).toBe(false);
-    });
+    for (const width of [320, 360, 390]) {
+      test(`at ${width}px the email contact row does not overflow`, async ({ page }) => {
+        await page.setViewportSize({ width, height: 800 });
+        await page.goto(`/${locale}/_gallery`);
+        await page.evaluate(() => document.fonts.ready);
+        const row = page.locator('a[href^="mailto:"]');
+        const value = row.locator("[data-value]");
+        const rowBox = await row.boundingBox();
+        const valueBox = await value.boundingBox();
+        if (!rowBox || !valueBox) throw new Error("email row not rendered");
+        expect(valueBox.x).toBeGreaterThanOrEqual(rowBox.x);
+        expect(valueBox.x + valueBox.width).toBeLessThanOrEqual(rowBox.x + rowBox.width);
+        const overflows = await value.evaluate((el) => el.scrollWidth > el.clientWidth);
+        expect(overflows).toBe(false);
+        const pageOverflow = await page.evaluate(
+          () => document.documentElement.scrollWidth > window.innerWidth,
+        );
+        expect(pageOverflow).toBe(false);
+      });
+    }
   });
 }
