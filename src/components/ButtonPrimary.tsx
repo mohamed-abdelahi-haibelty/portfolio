@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/button-variants";
 import { externalLinkProps } from "@/lib/links";
 
 export type ButtonLinkProps = {

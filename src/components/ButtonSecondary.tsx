@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/button-variants";
 import { externalLinkProps } from "@/lib/links";
 import type { ButtonLinkProps } from "./ButtonPrimary";
 
