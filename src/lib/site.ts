@@ -53,3 +53,16 @@ export function localeFromAcceptLanguage(header: string | null): Locale {
 export function isGalleryEnabled(env: { VERCEL_ENV?: string | undefined }): boolean {
   return env.VERCEL_ENV !== "production";
 }
+
+/**
+ * PostHog project key (public by design) when visit statistics are on: only on
+ * Vercel production, so previews, local builds and tests send nothing.
+ */
+export function analyticsKey(env: {
+  VERCEL_ENV?: string | undefined;
+  NEXT_PUBLIC_POSTHOG_KEY?: string | undefined;
+}): string | null {
+  if (env.VERCEL_ENV !== "production") return null;
+  const key = env.NEXT_PUBLIC_POSTHOG_KEY?.trim() ?? "";
+  return key.length > 0 ? key : null;
+}

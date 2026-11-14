@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary, isLocale, locales } from "@/content";
 import { buildMetadata, isIndexable } from "@/lib/seo";
-import { SITE_URL } from "@/lib/site";
+import { analyticsKey, SITE_URL } from "@/lib/site";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -30,9 +30,17 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
+  const statsKey = analyticsKey({
+    VERCEL_ENV: process.env.VERCEL_ENV,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+  });
+
   return (
     <html lang={locale} className={fontVariables}>
-      <body className="min-h-dvh paper antialiased">{children}</body>
+      <body className="min-h-dvh paper antialiased">
+        {children}
+        {statsKey && <script src="/stats.js" data-key={statsKey} defer />}
+      </body>
     </html>
   );
 }

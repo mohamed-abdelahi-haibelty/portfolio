@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { isGalleryEnabled, isLocale, localeFromAcceptLanguage, resolveSiteUrl } from "./site";
+import {
+  analyticsKey,
+  isGalleryEnabled,
+  isLocale,
+  localeFromAcceptLanguage,
+  resolveSiteUrl,
+} from "./site";
 
 describe("isLocale", () => {
   it("accepts fr and en", () => {
@@ -66,4 +72,19 @@ describe("isGalleryEnabled", () => {
       expect(isGalleryEnabled(env)).toBe(true);
     },
   );
+});
+
+describe("analyticsKey", () => {
+  it("returns the key on Vercel production only", () => {
+    expect(analyticsKey({ VERCEL_ENV: "production", NEXT_PUBLIC_POSTHOG_KEY: " phc_abc " })).toBe(
+      "phc_abc",
+    );
+    expect(analyticsKey({ VERCEL_ENV: "preview", NEXT_PUBLIC_POSTHOG_KEY: "phc_abc" })).toBeNull();
+    expect(analyticsKey({ NEXT_PUBLIC_POSTHOG_KEY: "phc_abc" })).toBeNull();
+  });
+
+  it("is off without a key", () => {
+    expect(analyticsKey({ VERCEL_ENV: "production" })).toBeNull();
+    expect(analyticsKey({ VERCEL_ENV: "production", NEXT_PUBLIC_POSTHOG_KEY: " " })).toBeNull();
+  });
 });
