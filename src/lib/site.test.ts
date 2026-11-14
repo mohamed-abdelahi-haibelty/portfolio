@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isLocale, localeFromAcceptLanguage, resolveSiteUrl } from "./site";
+import { isGalleryEnabled, isLocale, localeFromAcceptLanguage, resolveSiteUrl } from "./site";
 
 describe("isLocale", () => {
   it("accepts fr and en", () => {
@@ -53,4 +53,17 @@ describe("resolveSiteUrl", () => {
   it("falls back to localhost", () => {
     expect(resolveSiteUrl({})).toBe("http://localhost:3000");
   });
+});
+
+describe("isGalleryEnabled", () => {
+  it("is off on Vercel production", () => {
+    expect(isGalleryEnabled({ VERCEL_ENV: "production" })).toBe(false);
+  });
+
+  it.each([{ VERCEL_ENV: "preview" }, { VERCEL_ENV: "development" }, {}])(
+    "is on elsewhere (%j)",
+    (env) => {
+      expect(isGalleryEnabled(env)).toBe(true);
+    },
+  );
 });

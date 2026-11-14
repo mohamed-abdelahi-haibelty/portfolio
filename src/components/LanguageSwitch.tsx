@@ -18,7 +18,7 @@ export function LanguageSwitch({ locale, hash = "", labels, className }: Languag
       role="group"
       aria-label={labels.language}
       className={cn(
-        "flex rounded-full border-2 border-ink p-0.5 text-xs font-bold md:p-[3px] md:text-[13px]",
+        "inline-flex rounded-full border-2 border-ink p-0.5 text-xs font-bold md:p-[3px] md:text-[13px]",
         className,
       )}
     >

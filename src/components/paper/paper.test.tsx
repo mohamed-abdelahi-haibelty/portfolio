@@ -62,10 +62,23 @@ describe("text-bearing paper components keep their text accessible", () => {
     ["WavyUnderline", <WavyUnderline key="w">salut !</WavyUnderline>],
     ["HandNote", <HandNote key="n">salut !</HandNote>],
     ["Scrap", <Scrap key="s">salut !</Scrap>],
-    ["Sticker", <Sticker key="k">salut !</Sticker>],
+    ["Sticker", <Sticker key="k" text="salut !" />],
   ])("%s", (_name, element) => {
     const { container } = render(element);
     expect(screen.getByText("salut !")).toBeVisible();
     expect(container.querySelector("[aria-hidden]")).toBeNull();
+  });
+});
+
+describe("Sticker", () => {
+  it.each([
+    ["100\u00a0% sur mesure\u00a0!", "100\u00a0%<br>sur mesure\u00a0!"],
+    ["100\u00a0% tailor-made!", "100\u00a0%<br>tailor-made!"],
+    ["sur mesure", "sur mesure"],
+  ])("puts the figure of %j on its own line", (text, html) => {
+    const { container } = render(<Sticker text={text} />);
+    expect(
+      container.firstElementChild?.firstElementChild?.innerHTML.replaceAll("&nbsp;", "\u00a0"),
+    ).toBe(html);
   });
 });

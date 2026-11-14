@@ -6,7 +6,8 @@
  * "Cahier quadrillé" design tokens. Components use only these names.
  * Fluid type interpolates between 390px and 1024px viewports.
  */
-@theme {
+/* `static`: emit every token, including those only referenced through var() (pins, tape, highlight). */
+@theme static {
   --color-*: initial;
   --color-paper: #fcfcfa;
   --color-grid: #e3e8f0;

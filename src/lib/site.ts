@@ -48,3 +48,8 @@ export function localeFromAcceptLanguage(header: string | null): Locale {
 
   return quality.en > quality.fr ? "en" : defaultLocale;
 }
+
+/** The component gallery (`/[locale]/_gallery`) exists everywhere except Vercel production. */
+export function isGalleryEnabled(env: { VERCEL_ENV?: string | undefined }): boolean {
+  return env.VERCEL_ENV !== "production";
+}

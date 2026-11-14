@@ -26,7 +26,7 @@ describe("ContactRow", () => {
     expect(screen.getByText("+222 27 11 70 87")).toBeVisible();
   });
 
-  it("inserts a break opportunity before @ in an email", () => {
+  it("inserts a break opportunity before @ (and after the dots) in an email", () => {
     render(
       <ContactRow
         href={links.email.href}
@@ -38,7 +38,7 @@ describe("ContactRow", () => {
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "mailto:mohamed.abdelahi.haibelti@gmail.com");
     const value = link.querySelector("[data-value]");
-    expect(value?.innerHTML).toBe("mohamed.abdelahi.haibelti<wbr>@gmail.com");
+    expect(value?.innerHTML).toBe("mohamed.<wbr>abdelahi.<wbr>haibelti<wbr>@gmail.com");
     expect(value).toHaveTextContent("mohamed.abdelahi.haibelti@gmail.com");
   });
 

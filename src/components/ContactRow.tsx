@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { externalLinkProps } from "@/lib/links";
 import { ArrowUpRightIcon } from "./icons/ArrowUpRightIcon";
@@ -12,13 +12,23 @@ type ContactRowProps = {
   className?: string;
 };
 
-/** Allow a line break before "@" so an email address never overflows its row. */
+/**
+ * Email addresses never overflow: allow a line break before "@" and after each
+ * "." of the local part, so the address only splits at those points.
+ */
 function breakableValue(value: string): ReactNode {
   const at = value.indexOf("@");
   if (at <= 0) return value;
+  const parts = value.slice(0, at).split(".");
   return (
     <>
-      {value.slice(0, at)}
+      {parts.map((part, index) => (
+        <Fragment key={index}>
+          {index > 0 && "."}
+          {index > 0 && <wbr />}
+          {part}
+        </Fragment>
+      ))}
       <wbr />
       {value.slice(at)}
     </>
