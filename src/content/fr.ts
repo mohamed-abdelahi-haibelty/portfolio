@@ -6,6 +6,10 @@ export const fr = {
     name: "abdellahi.dev",
     person: "Mohamed Abdellahi Haibelty",
   },
+  logo: {
+    text: "abdellahi.dev",
+  },
+  skip: "Aller au contenu",
   nav: {
     guarantees: "Ce que je garantis",
     method: "Méthode",
@@ -42,6 +46,7 @@ export const fr = {
   },
   ideas: {
     title: { before: "Des idées en vrac ? ", highlight: "J’en fais un vrai projet." },
+    lead: "Des idées pas encore organisées, un besoin encore flou ? Pas de souci : on les pose ensemble, je les mets en ordre et j’en fais un projet concret, prêt à servir.",
     scraps: [
       "une appli pour mes clients… ?",
       "un site ? une appli ?",
@@ -80,6 +85,25 @@ export const fr = {
       },
     ],
   },
+  method: {
+    title: "Comment on travaille",
+    note: "— sans prise de tête ↓",
+    steps: [
+      {
+        title: "On discute",
+        text: "Vous m’expliquez votre idée. C’est gratuit et sans engagement.",
+      },
+      {
+        title: "Je propose un plan",
+        text: "Ce qu’on construit, en combien de temps, pour quel prix. Clair.",
+      },
+      { title: "Je construis", text: "Vous suivez l’avancement à chaque étape, sans jargon." },
+      {
+        title: "En ligne !",
+        text: "Votre site est publié, rapide et sûr. Et je reste disponible.",
+      },
+    ],
+  },
   contact: {
     title: { before: "Un projet en tête ? ", highlight: "Parlons-en." },
     note: "promis, je ne mords pas →",
@@ -87,7 +111,20 @@ export const fr = {
     phone: { label: "Téléphone" },
     email: { label: "E-mail" },
   },
+  footer: {
+    copyright: "© {year} Mohamed Abdellahi Haibelty",
+    domain: "abdellahi.dev",
+  },
+  notFound: {
+    title: "Oups, cette page s’est perdue.",
+    text: "Pas de panique, l’accueil est juste là.",
+    cta: "Retour à l’accueil",
+  },
   seo: {
     title: "Mohamed Abdellahi — Développeur web : apps sûres, rapides et bien référencées",
+    description:
+      "Développeur web à Nouakchott. Je transforme vos idées, même en vrac, en applications web sûres, rapides et faciles à trouver sur Google. Parlons de votre projet.",
+    ogAlt: "Mohamed Abdellahi, développeur web — abdellahi.dev",
+    jobTitle: "Développeur web",
   },
 } satisfies Dictionary;

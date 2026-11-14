@@ -34,6 +34,20 @@ describe("dictionaries", () => {
     }
   });
 
+  it.each([
+    ["fr", fr],
+    ["en", en],
+  ] as const)("%s never mentions upcoming projects", (_locale, dict) => {
+    for (const leaf of leaves(dict)) {
+      expect(String(leaf.value), leaf.path).not.toMatch(/à venir|coming soon|bientôt/i);
+    }
+  });
+
+  it("the footer copyright has a {year} placeholder in both locales", () => {
+    expect(fr.footer.copyright).toContain("{year}");
+    expect(en.footer.copyright).toContain("{year}");
+  });
+
   it("getDictionary returns the dictionary of each locale", () => {
     expect(locales.map((locale) => getDictionary(locale))).toEqual([fr, en]);
   });

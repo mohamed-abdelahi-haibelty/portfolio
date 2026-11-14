@@ -9,6 +9,11 @@ export type Dictionary = {
     name: string;
     person: string;
   };
+  logo: {
+    text: string;
+  };
+  /** Skip link text. */
+  skip: string;
   nav: {
     guarantees: string;
     method: string;
@@ -46,6 +51,7 @@ export type Dictionary = {
   };
   ideas: {
     title: HighlightedText;
+    lead: string;
     scraps: [string, string, string, string, string];
     arrow: string;
     windowLabel: string;
@@ -57,6 +63,11 @@ export type Dictionary = {
     note: string;
     items: [GuaranteeItem, GuaranteeItem, GuaranteeItem, GuaranteeItem];
   };
+  method: {
+    title: string;
+    note: string;
+    steps: [MethodStep, MethodStep, MethodStep, MethodStep];
+  };
   contact: {
     title: HighlightedText;
     note: string;
@@ -64,9 +75,27 @@ export type Dictionary = {
     phone: { label: string };
     email: { label: string };
   };
+  footer: {
+    /** `{year}` is replaced with the build year. */
+    copyright: string;
+    domain: string;
+  };
+  notFound: {
+    title: string;
+    text: string;
+    cta: string;
+  };
   seo: {
     title: string;
+    description: string;
+    ogAlt: string;
+    jobTitle: string;
   };
+};
+
+export type MethodStep = {
+  title: string;
+  text: string;
 };
 
 export type GuaranteeItem = {
